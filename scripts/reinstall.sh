@@ -32,15 +32,15 @@ if [ ${VERBOSE} = 0 ]; then
   QUIET="--quiet"
 fi
 
-${DRUSH} site-install forall \
+${DRUSH} site-install standard \
   install_configure_form.update_status_module=NULL --yes ${QUIET} \
-  --root=${REPO_DIR}/docroot --uri=http://whitehouse.gov --account-name=admin \
-  --account-pass=admin --site-name=whitehouse.gov 1> /dev/null
+  --root=${REPO_DIR}/docroot --uri=http://billie.io --account-name=breese \
+  --account-pass=admin --site-name=billie.io 1> /dev/null
 
-${DRUSH} en --yes ${QUIET} --root=${REPO_DIR}/docroot \
-  --uri=http://whitehouse.gov gov_whitehouse_www -y
+#${DRUSH} en --yes ${QUIET} --root=${REPO_DIR}/docroot \
+#  --uri=http://whitehouse.gov gov_whitehouse_www -y
 
 # Restore .htaccess.
-cd ${REPO_DIR}
-unlink docroot/.htaccess
-ln -s ../assets/.htaccess-prod docroot/.htaccess
+#cd ${REPO_DIR}
+#unlink docroot/.htaccess
+#ln -s ../assets/.htaccess-prod docroot/.htaccess
