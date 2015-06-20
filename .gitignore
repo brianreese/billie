@@ -1,0 +1,47 @@
+# Ignore paths that contain user-generated content.
+docroot/sites/*/files
+docroot/sites/*/private
+
+# Ignore local configuration files.
+#
+# Note: This does NOT ignore settings.php. That's not an oversight, it's
+# intentional. Settings.php does not include sensitive credentials. It delegates
+# that to include files which are not included in this repository. (Private
+# credentials are provided by the hosting provider, or local config ignored
+# below.)
+local/settings.php
+docroot/sites/*/settings.local.php
+
+# Ignore vim stuff.
+*.swp
+*.swo
+
+# Ignore PHP Storm.
+*.idea
+
+# Ignore OSX Stuff
+*.DS_Store
+.FBC*
+*/.FBC*
+
+# Mac application artifacts
+._*
+*/._*
+
+# Vagrant
+*.vdi
+
+.sass-cache/
+
+# Ignore behat "vendor" directory
+vendor
+
+# Ignore FirePHP (added by devel)
+docroot/FirePHPCore
+
+# Ignore static directory in docroot
+docroot/static
+
+# Ignore Behat local
+# Deliberately leaving it open ended you can put it in tests/behat or local/
+behat.local.yml
