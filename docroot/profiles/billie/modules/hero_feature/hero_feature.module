@@ -1,0 +1,133 @@
+<?php
+/**
+ * @file
+ * Code for the Heroes feature.
+ */
+
+include_once 'hero_feature.features.inc';
+
+/**
+ * Register template override for Hero content.
+ *
+ * Implements hook_theme_registry_alter().
+ */
+function hero_feature_theme_registry_alter(&$theme_registry) {
+  $path = drupal_get_path('module', 'hero_feature') . '/templates';
+  $template_file_objects = drupal_find_theme_templates($theme_registry, '.tpl.php', $path);
+  foreach ($template_file_objects as $key => $object) {
+    if (!isset($theme_registry[$key]['theme path']) || !preg_match('#/themes/#', $theme_registry[$key]['theme path'])) {
+      // Alter the theme path and template elements.
+      $theme_registry[$key]['theme path'] = $path;
+      $theme_registry[$key] = array_merge($theme_registry[$key], $object);
+      $theme_registry[$key]['type'] = 'module';
+    }
+  }
+}
+
+/**
+ * Provide override variables and values to Heroes.
+ *
+ * Implements template_preprocess_node().
+ */
+function hero_feature_preprocess_node(&$variables) {
+  if($variables['type'] == 'hero') {
+
+
+    // Define new array for user-defined settings.
+    $variables['hero_user_defined'] = array();
+
+    // Determine presence of image, and generate a class to describe the container.
+    $hero_image_class = (!empty($variables['field_hero_bg_image'])
+      ? 'field-image'
+      : 'field-image field-image-empty'
+    );
+
+    // Settings for Image and Image Background.
+    $hero_image_style_string = ' style="';
+    $hero_image_style_string .= 'background-color: '
+      .(!empty($variables['field_hero_bg_color'])
+        ? $variables['field_hero_bg_color']['und'][0]['rgb'] . '; '
+        : 'transparent; '
+      );
+ 
+    // !!! Additional inline styles and style generators may be added here,
+    // as needed. Use sparingly.
+
+    $hero_image_style_string .= '"';
+
+    // If the Hero Image Style String is not empty, add it to the Variables array.
+    if (!empty($hero_image_style_string) && $hero_image_style_string != ' style=""') {
+      $variables['hero_user_defined']['hero_image_class'] = $hero_image_class;
+      $variables['hero_user_defined']['hero_image_style_string'] = $hero_image_style_string;
+    }
+
+    // Load javascript function for hero.
+    drupal_add_js(drupal_get_path('module', 'hero_feature') . '/js/hero_feature.js', array('group' => JS_THEME));
+
+    // Loop through each set and map the image url.
+    $background_images = array(
+      'desktop' => 'field_hero_bg_image',
+      'tablet' => 'field_hero_bg_image_tablet',
+      'mobile' => 'field_hero_bg_image_mobile',
+    );
+
+    foreach ($background_images as $key => $field) {
+      if (!empty($variables[$field])) {
+        // Detecting if responsive images are defined and loading to attach to image.
+        $uri = !empty($variables[$field]) ? file_create_url($variables[$field][0]['uri']) : '';
+        // Append image urls as attributes to the desktop image.
+        $variables['content']['field_hero_bg_image'][0]['#item']['attributes']['data-' . $key] = $uri;
+      }
+    }
+
+    // Settings for caption, including positioning directives.
+    $hero_caption_style_string = ' style="';
+
+    // Set caption background color. Make transparent if no color is selected
+    // or if 'show background' is unchecked.
+    $hero_caption_bg_style_string = 'style="background-color: ';
+    if ((!empty($variables['field_hero_content_box_bg_color']))
+    && ($variables['field_hero_show_content_box_bg']['und'][0]['value'] != 0)) {
+      $hero_caption_bg_style_string .= $variables['field_hero_content_box_bg_color']['und'][0]['rgb'] . ';" ';
+      $hero_caption_background_class = 'caption-with-background ';
+    }
+    else {
+      $hero_caption_bg_style_string .= 'transparent;" ';
+      $hero_caption_background_class = 'caption-no-background ';
+    }
+
+    $hero_caption_style_string = 'style="';
+
+    // Set caption dimensions. No logic is needed here, as these
+    // fields are required.
+    $hero_caption_style_string .= 'max-width: ' . $variables['field_hero_content_box_width']['und'][0]['value'] . 'px; ';
+    $hero_caption_style_string .= 'max-height: ' . $variables['field_hero_content_box_height']['und'][0]['value'] . 'px; ';
+
+    // Set caption position class.
+    if (empty($variables['field_hero_youtube'])) {
+      $hero_caption_position = $variables['field_hero_content_box_position']['und'][0]['value'];
+      $hero_caption_position_class = 'caption-position-' . $hero_caption_position . ' ';
+    }
+    // If this hero contains a video, provide a class which says so.
+    else {
+      $hero_caption_position_class = 'caption-position-video ';
+    }
+
+    // !!! Additional inline styles and style generators may be added here,
+    // as needed. Use sparingly.
+
+    $hero_caption_style_string .= '"';
+
+    // Add variables to the variables array. Each of these will always
+    // have a value.
+    $variables['hero_user_defined']['hero_caption_style_string'] = $hero_caption_style_string;
+    $variables['hero_user_defined']['hero_caption_bg_style_string'] = $hero_caption_bg_style_string;
+    $variables['hero_user_defined']['hero_caption_position_class'] = $hero_caption_position_class;
+    $variables['hero_user_defined']['hero_caption_background_class'] = $hero_caption_background_class;
+
+    // Settings for video.
+    if ($variables['field_hero_video_autoplay']['und'][0]['value'] == 1) {
+      $variables['content']['field_hero_youtube'][0]['#autoplay'] = 1;
+    }
+  }
+}

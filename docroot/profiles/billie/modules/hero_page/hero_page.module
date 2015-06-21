@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Forall Hero Page feature.
+ */
+
+include_once 'hero_page.features.inc';
