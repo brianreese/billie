@@ -1,0 +1,51 @@
+name = Billie
+description = A platform for managing expenses.
+core = 7.x
+distribution_name = Billie
+exclusive = 1
+
+; System Requirements
+php = 5.3
+php_memory_limit = 128M
+
+; Drupal Core
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = toolbar
+dependencies[] = overlay
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = rdf
+
+; Contribs
+dependencies[] = diff
+dependencies[] = module_filter
+dependencies[] = navbar
+dependencies[] = pathauto
+dependencies[] = token
+dependencies[] = menu_attributes
+dependencies[] = metatag
+dependencies[] = metatag_opengraph
+dependencies[] = webform
+dependencies[] = path_breadcrumbs
+dependencies[] = imce
+dependencies[] = social_share
+dependencies[] = scheduler
+dependencies[] = clientside_validation
+dependencies[] = clientside_validation_webform
+dependencies[] = webform_ajax
+dependencies[] = content_experiments
