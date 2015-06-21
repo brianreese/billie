@@ -49,6 +49,7 @@ ${DRUSH} make ${REPO_DIR}/build.make ${REPO_DIR}/docroot \
 # Restore assets.
 
 # Restore custom projects.
+restore_from_vcs docroot/profiles/billie
 
 # Restore libraries.
 

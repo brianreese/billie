@@ -32,7 +32,7 @@ if [ ${VERBOSE} = 0 ]; then
   QUIET="--quiet"
 fi
 
-${DRUSH} site-install standard \
+${DRUSH} site-install billie \
   install_configure_form.update_status_module=NULL --yes ${QUIET} \
   --root=${REPO_DIR}/docroot --uri=http://billie.io --account-name=breese \
   --account-pass=admin --site-name=billie.io 1> /dev/null

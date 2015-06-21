@@ -576,6 +576,9 @@ projects[lightning_features][subdir] = contrib
 ;;;; THEMES
 ;;;;
 
+projects[bootstrap][type] = theme
+projects[bootstrap][version] = 3.0
+
 projects[zen][type] = theme
 projects[zen][download][type] = git
 projects[zen][download][branch] = 7.x-5.5
