@@ -38,6 +38,7 @@ dependencies[] = jquery_update
 dependencies[] = module_filter
 dependencies[] = navbar
 dependencies[] = pathauto
+dependencies[] = panopoly_theme
 dependencies[] = token
 dependencies[] = menu_attributes
 dependencies[] = metatag

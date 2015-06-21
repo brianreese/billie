@@ -298,7 +298,8 @@ function billie_install() {
   // Create and set the site homepage.
   billie_create_homepage_node('Billie', 'homepage');
   variable_set('site_frontpage', 'homepage');
-
+  billie_create_hero_feature();
+  billie_create_hero_page();
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);
@@ -347,4 +348,37 @@ function billie_create_homepage_node($title, $alias) {
   $homepage_node->title = $title;
   $homepage_node->path['alias'] = $alias;
   node_save($homepage_node);
+}
+
+function billie_create_hero_feature() {
+  $hero_feature = new stdClass();
+  $hero_feature->language = LANGUAGE_NONE;
+  $hero_feature->type = 'hero';
+  $hero_feature->title = 'Billie the Hero';
+  $hero_feature->hero_content_box[LANGUAGE_NONE][0] = 'Welcome to Billie again';
+
+  // Prepare the image file to use for this node.
+  $hero_module_path = drupal_get_path('module', 'hero_feature');
+  $filepath = drupal_realpath($hero_module_path . '/img/hero-bridge.jpg');
+  $file = (object) array(
+    'uid' => 1,
+    'uri' => $filepath,
+    'filemime' => file_get_mimetype($filepath),
+    'status' => 1,
+  );
+  $file = file_copy($file, 'public://hero-backgrounds');
+
+  $hero_feature->field_hero_bg_image[LANGUAGE_NONE][0] = (array) $file;
+
+  node_save($hero_feature);
+}
+
+function billie_create_hero_page() {
+  $hero_page = new stdClass();
+  $hero_page->language = LANGUAGE_NONE;
+  $hero_page->type = 'hero_page';
+  $hero_page->title = 'Welcome';
+  $hero_page->field_hero_queue[LANGUAGE_NONE][0]['target_id'] = 2;
+
+  node_save($hero_page);
 }
